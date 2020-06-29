@@ -1,0 +1,40 @@
+{{ include("layouts/header.html.twig") }}
+
+<h3> </h3>
+
+
+<h2 class="page-header">Product: List</h2>
+
+<table class="table">
+    <thead> 
+        <tr> 
+            <th>#</th> 
+            <th>Product</th> 
+            <th>Description</th> 
+            <th></th> 
+        </tr> 
+    </thead> 
+    <tbody> 
+        {% for product in products %}
+            <tr> 
+                <th scope="row">{{ product.id }}</th> 
+                <td>{{ product.prdocutName }}</td> 
+                <td>{{ product.productDesc }}</td> 
+                <td>
+                    <a href="/product/edit/{{ product.id }}" class="btn btn-default">Edit</a>
+                </td> 
+                <td>
+                    <a href="/product/delete/{{ product.id }}" class="btn btn-danger">Delete</a>
+                </td> 
+            </tr> 
+        {% endfor %}
+    </tbody> 
+</table>
+
+
+
+</div>
+{{ include("layouts/footer.html.twig") }}
+
+
+

@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ absolute_url(asset('css/bootstrap.min.css')) }}">
+        <link rel="stylesheet" href="{{ absolute_url(asset('css/style.css')) }}">
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{{ path("home_route") }}">BookStore</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="{{ path("home_route") }}">Home</a></li>
+                    <li><a  href="{{ path("cart_invoice_route") }}">View Invoice</a></li>
+                      <li><a  href="{{ path("product_view") }}">Product</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        {% for success_message in app.session.flashbag.get('message') %}
+            <div class="alert alert-success">{{ success_message }}</div>
+        {% endfor %}
+
+        {% for error_message in app.session.flashbag.get('error') %}
+            <div class="alert alert-danger">{{ error_message }}</div>
+        {% endfor %}
+        <div class="container">
+
+
+

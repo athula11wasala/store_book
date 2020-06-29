@@ -1,0 +1,112 @@
+{{ include("layouts/header.html.twig") }}
+
+<h3> </h3>
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+
+<a href="#" class="cart-box" id="cart-info" title="View Cart">
+    {{ count }}
+</a>
+
+<div class="shopping-cart-box">
+    <a href="#" class="close-shopping-cart-box" >Close</a>
+    <h3> BookStore </h3>
+    <div id="shopping-cart-results">
+    </div>
+</div>
+<ul class="products-wrp">
+    {% for product in product_list %}
+        <li>
+            <form  class="form-item index">
+                <h4>{{ product.PrdocutName }}</h4>
+
+                <div><img src="{{ absolute_url(asset( product.ProductImage )) }}"></div>
+                <div>Price : {{ product.ProductPrice }}
+                    <div>
+                        <div class="item-box">
+                            <div>
+                                Qty :
+                                <select name="product_qty">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                </select>
+                            </div>
+                            <input name="product_code" type="hidden" value="{{ product.ProductCode }}">
+                            <button type="submit">Add to Cart</button>
+                        </div>
+                        </form>
+                        </li>
+                    {% endfor %}
+                    </ul>
+
+                </div>
+                {{ include("layouts/footer.html.twig") }}
+                <script>
+
+                    function formsubmit(elem) {
+                        $("form[name='form']").submit();
+                    }
+                    $(document).ready(function () {
+                        var routePath = "{{ path('cart_add_route') }}";
+                        var removecart = "{{ path('cart_remove_route') }}";
+
+                        $(".form-item").submit(function (e) {
+                            var form_data = $(this).serialize();
+                            var button_content = $(this).find('button[type=submit]');
+                            button_content.html('Adding...'); //Loading button text
+
+                            $.ajax({
+                                url: routePath,
+                                type: "POST",
+                                dataType: "json",
+                                data: form_data
+                            }).done(function (data) {
+                                $("#cart-info").html(data.items);
+                                button_content.html('Add to Cart');
+                                alert("Item added to Cart!");
+                                if ($(".shopping-cart-box").css("display") == "block") {
+                                    $(".cart-box").trigger("click"); //trigger click to update the cart box.
+                                }
+                            })
+                            e.preventDefault();
+                        });
+
+                        //Show Items in Cart
+                        $(".cart-box").click(function (e) { //when user clicks on cart box
+                            e.preventDefault();
+                            $(".shopping-cart-box").fadeIn(); //display cart box
+                            $("#shopping-cart-results").html('<img src="../images/ajax-loader.gif">');
+                            $("#shopping-cart-results").load(routePath, {"load_cart": "1"});
+                        });
+
+                        //Close Cart
+                        $(".close-shopping-cart-box").click(function (e) { //user click on cart box close link
+                            e.preventDefault();
+                            $(".shopping-cart-box").fadeOut(); //close cart-box
+                        });
+
+                        //Remove items from cart
+                        $("#shopping-cart-results").on('click', 'a.remove-item', function (e) {
+                            e.preventDefault();
+                            var pcode = $(this).attr("data-code");
+                            $(this).parent().fadeOut();
+                            $.getJSON(removecart, {"remove_code": pcode}, function (data) {
+                                $("#cart-info").html(data.items);
+                              //  $(".cart-box").trigger("click");
+                            });
+                        });
+
+                    });
+                </script>
+
+

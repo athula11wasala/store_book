@@ -1,0 +1,21 @@
+{{ include("layouts/header.html.twig") }}
+
+<h3 style="text-align:center">Invoice Your Cart Before Buying</h3>
+<div id="shopping-cart-results"></div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+
+        var routePath = "{{ path('cart_ajax_invoice_route') }}";
+
+        $("#shopping-cart-results").load(routePath);
+
+    });
+</script>
